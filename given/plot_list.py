@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-path = 'append.csv'
+path = 'search.csv'
 
 # title = 'Nanoseconds taken by appending on an Array and Linked list.'
 # xlabel = r'$i^{th}$ append'

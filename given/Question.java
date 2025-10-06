@@ -33,6 +33,7 @@ public class Question implements Comparable<Question> {
         //duration += System.nanoTime() - start;
         //scanner.close();
         missed += given.equals(answer) ? -1 : 1;
+        scanner.close();
     }
 
     public int compareTo(Question other) {

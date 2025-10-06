@@ -3,13 +3,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Arrays;
 
 public class ListExperiment {
   public static void main(String[] args) {
     List<Integer> ls = null;
     StringBuilder sb = new StringBuilder();
-    appendTimes((int) Math.pow(2, 20), ls, sb);
+    //appendTimes((int) Math.pow(2, 20), ls, sb);
     searchTimes((int) Math.pow(2, 17), ls, sb);
   }
 
@@ -31,24 +30,21 @@ public class ListExperiment {
    * 
    */
 
-
-
   public static void appendTimes(int n, List<Integer> ls, StringBuilder sb) {
-    //measuring append times for ArrayList and LinkedList and write a CSV
+    // measuring append times for ArrayList and LinkedList and write a CSV
     long start = -1;
-    for (int i =0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
       sb.setLength(0);
       ls = i == 0 ? new ArrayList<Integer>() : new LinkedList<Integer>();
       for (int j = 0; j < n; j++) {
         start = System.nanoTime();
         ls.add(0);
-        sb.append(System.nanoTime() - start + ",");//remove the last comma
+        sb.append(System.nanoTime() - start + ",");// remove the last comma
       }
       sb.setLength(sb.length() - 1);
       write("append.csv", sb.toString(), i == 1);
     }
   }
-  
 
   /**
    * FOR ls IN [ArrayList, LinkedList]:
@@ -70,6 +66,21 @@ public class ListExperiment {
    * @param sb The string builder to join the nanoseconds.
    */
   public static void searchTimes(int n, List<Integer> ls, StringBuilder sb) {
+    // long start = -1;
+    for (int count = 0; count < 2; count++) {
+      sb.setLength(0);
+      ls = count == 0 ? new ArrayList<Integer>() : new LinkedList<Integer>();
+      for (int i = 1; (Math.pow(2, i)) < n; i++) {
+        ls.clear();
+        int x = randomInteger(0, (int) Math.pow(2, i));
+        fillList(0, (int) Math.pow(2, i), ls);
+        long start = System.nanoTime();
+        binarySearch(ls, x, 0, ls.size() - 1);
+        sb.append(System.nanoTime() - start + ",");
+      }
+      sb.setLength(sb.length() - 1);
+      write("search.csv", sb.toString(), count == 1);
+    }
     return;
   }
 
@@ -78,19 +89,23 @@ public class ListExperiment {
    * @param n  The integer to look for.
    * @param s  The starting bound.
    * @param r  The ending bound.
-   * @return   Whether n was found in ls.
+   * @return Whether n was found in ls.
    */
   public static boolean binarySearch(List<Integer> ls, int n, int s, int r) {
-    if (ls == null || ls.size() == 0) return false;
+    if (ls == null || ls.size() == 0)
+      return false;
     int left = s;
     int right = r;
 
     while (left <= right) {
       int mid = left + ((right - left) / 2);
       int t = ls.get(mid);
-      if (t == n) return true;
-      if (t < n) left = mid + 1;
-      else right = mid - 1;
+      if (t == n)
+        return true;
+      if (t < n)
+        left = mid + 1;
+      else
+        right = mid - 1;
     }
     return false;
   }
